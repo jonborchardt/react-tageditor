@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import * as ReactDOM from 'react-dom';
 import { KEYS } from "./const"
 import utils from "./utils"
 
@@ -7,7 +8,7 @@ class Tag extends Component {
         super(props)
     }
     componentDidMount() {
-        var node = this.refs.input.getDOMNode()
+        var node = this.refs.input
         if (this.props.active) {
             node.focus()
         } else {
@@ -16,8 +17,8 @@ class Tag extends Component {
         utils.autoSize(node)
     }
     componentWillReceiveProps(nextProps) {
-        var node = this.refs.input.getDOMNode()
-          , tagNode = React.findDOMNode(this)
+        var node = this.refs.input
+          , tagNode = ReactDom.findDOMNode(this)
           , activityChanged = this.props.active !== nextProps.active
 
         if (nextProps.active) {
@@ -37,7 +38,7 @@ class Tag extends Component {
         this.props.onFocus()
     }
     handleBlur() {
-        var node = this.refs.input.getDOMNode()
+        var node = this.refs.input
         this.props.onSave(node.value)
     }
     handleKeyDown(e) {
@@ -46,20 +47,20 @@ class Tag extends Component {
             if (KEYS[key] === charCode) {
                 keyHandlers[key].call(this, {
                     originalEvent: e,
-                    caret: utils.getCaretPos(this.refs.input.getDOMNode()),
-                    node: this.refs.input.getDOMNode()
+                    caret: utils.getCaretPos(this.refs.input),
+                    node: this.refs.input
                 })
             }
         }
         if (this.props.delimiterKeys.indexOf(charCode) > -1) {
             e.preventDefault()
-            var node = this.refs.input.getDOMNode()
+            var node = this.refs.input
             this.split(node, utils.getCaretPos(node))
         }
     }
     handleChange(e) {
         var tagText = e.target.value
-          , node = this.refs.input.getDOMNode()
+          , node = this.refs.input
           , caretPos = utils.getCaretPos(node)
           , lastInput = tagText.charAt(caretPos - 1)
         this.props.delimiterChars.forEach(delimiter =>  {
